@@ -40,11 +40,6 @@ public class PDPMonitor implements Runnable {
 		}
 	}
 
-	// Exposes the PDP reference to the other systems.
-	public PowerDistributionPanel getPDP() {
-		return this.pdp;
-	}
-
 	// Exposes and returns the CAN ID of the PDP to other systems.
 	public synchronized int getPDPCANID() {
 		return this.pdpCANID;
