@@ -32,7 +32,7 @@ public class PDPMonitor implements Runnable {
 	private PowerDistributionPanel pdp;
 	private Thread pdpThread;
 	private String pdpThreadName = "PDP Thread";
-	
+
 	// Allows the thread to be "stopped"/Started.
 	public static volatile boolean running = true;
 
@@ -86,12 +86,18 @@ public class PDPMonitor implements Runnable {
 		return pdp.getCurrent(pdpChannel);
 	}
 
+	// Allows you to update the table of data in the pdp even though
+	// the thread is "shutdown".
+	public synchronized void updatePDPData() {
+		pdp.updateTable();
+	}
+
 	/*
-	* If a PDPMonitor instance has not been created, create one and expose
-	* it to the getInstance() caller. This will also prevent another instance
-	* of the PDPMonitor from being created as all of the constructors are
-    * private to this class.
-	*/
+	 * If a PDPMonitor instance has not been created, create one and expose it
+	 * to the getInstance() caller. This will also prevent another instance of
+	 * the PDPMonitor from being created as all of the constructors are private
+	 * to this class.
+	 */
 	public static PDPMonitor getInstance() {
 		if (instance == null) {
 			synchronized (PDPMonitor.class) {
@@ -104,14 +110,15 @@ public class PDPMonitor implements Runnable {
 		return instance;
 	}
 
-	/* If a PDPMonitor instance has not been created, create one and expose
-	* it to the getInstance() caller. This will also prevent another instance
-	* of the PDPMonitor from being created as all of the constructors are
-	* private to this class.
-	*
-	* This method signature allows the PDPMonitor to be constructed with a 
-	* different CAN address than 0. 
-	*/
+	/*
+	 * If a PDPMonitor instance has not been created, create one and expose it
+	 * to the getInstance() caller. This will also prevent another instance of
+	 * the PDPMonitor from being created as all of the constructors are private
+	 * to this class.
+	 *
+	 * This method signature allows the PDPMonitor to be constructed with a
+	 * different CAN address than 0.
+	 */
 	public static PDPMonitor getInstance(int CANAddress) {
 		if (instance == null) {
 			synchronized (PDPMonitor.class) {
